@@ -1,5 +1,5 @@
 @echo off
-set UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+set UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36 "
 
 cd tools
 nvcc -V >nul 2>&1 || goto Check_if_python_is_installed
@@ -41,21 +41,25 @@ echo.
 echo Install Anaconda
 echo.
 
-echo start /wait "" "%TEMP%\Anaconda_Windows-setup.exe" /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S "/D=%UserProfile%\Anaconda3">"%TEMP%\Anaconda_Windows-setup.bat"
+echo start /wait "" "%TEMP%\Anaconda_Windows-setup.exe" /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S /D="%UserProfile%\AppData\Local\Continuum\anaconda3">"%TEMP%\Anaconda_Windows-setup.bat"
 echo exit /b>>"%TEMP%\Anaconda_Windows-setup.bat"
 powershell Start-Process "%TEMP%\Anaconda_Windows-setup.bat" -Wait -Verb runas
 del "%TEMP%\Anaconda_Windows-setup.bat"
 del "%TEMP%\Anaconda_Windows-setup.exe"
 
-pushd "%UserProfile%\Anaconda3\"
-call "%UserProfile%\Anaconda3\Scripts\activate.bat" "%UserProfile%\Anaconda3"
+if exist "%UserProfile%\Anaconda3\" set "Anaconda_dir=%UserProfile%\Anaconda3\"
+if exist "%UserProfile%\AppData\Local\Continuum\anaconda3\" set "Anaconda_dir=%UserProfile%\AppData\Local\Continuum\anaconda3\"
+if not defined Anaconda_dir call :error_end 4
+
+pushd "%Anaconda_dir%"
+call "%Anaconda_dir%Scripts\activate.bat" "%UserProfile%\Anaconda3"
 call conda update conda -y
 call conda update --all -y
 call pip install chainer
 if defined cuda_ver call pip install cupy-cuda%cuda_ver%
 call pip install wand
 call pip install pillow
-call "%UserProfile%\Anaconda3\Scripts\deactivate.bat"
+call "%Anaconda_dir%Scripts\deactivate.bat"
 popd
 
 goto install_waifu2x-chainer
@@ -80,5 +84,7 @@ exit
 if "%~1"=="1" echo URL acquisition failed.
 if "%~1"=="2" echo failed to download anaconda.
 if "%~1"=="3" echo failed to download waifu2x-chainer.
+if "%~1"=="4" echo Anaconda installation location could not be found.
+
 pause
 exit
