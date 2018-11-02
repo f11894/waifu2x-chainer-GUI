@@ -61,7 +61,7 @@ namespace waifu2x_chainer_gui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("64")]
+        [global::System.Configuration.DefaultSettingValueAttribute("128")]
         public string block_size {
             get {
                 return ((string)(this["block_size"]));
@@ -193,7 +193,7 @@ namespace waifu2x_chainer_gui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
         public string batch_size {
             get {
                 return ((string)(this["batch_size"]));

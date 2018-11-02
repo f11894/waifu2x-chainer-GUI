@@ -12,7 +12,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="block_size" Type="System.String" Scope="User">
-      <Value Profile="(Default)">64</Value>
+      <Value Profile="(Default)">128</Value>
     </Setting>
     <Setting Name="Device_ID" Type="System.String" Scope="User">
       <Value Profile="(Default)">Unspecified</Value>
@@ -45,7 +45,7 @@
       <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="batch_size" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">16</Value>
     </Setting>
     <Setting Name="color_mode" Type="System.String" Scope="User">
       <Value Profile="(Default)">RGB</Value>

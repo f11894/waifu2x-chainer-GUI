@@ -70,7 +70,7 @@ namespace waifu2x_chainer_gui
                 txtDevice.Text = Properties.Settings.Default.Device_ID;
             }
 
-            btn64.IsChecked = true;
+            btn128.IsChecked = true;
 
             if (Properties.Settings.Default.block_size == "256")
             { btn256.IsChecked = true; }
@@ -81,7 +81,7 @@ namespace waifu2x_chainer_gui
             if (Properties.Settings.Default.block_size == "32")
             { btn32.IsChecked = true; }
 
-            btnBatch8.IsChecked = true;
+            btnBatch16.IsChecked = true;
 
             if (Properties.Settings.Default.batch_size == "32")
             { btnBatch32.IsChecked = true; }
@@ -171,8 +171,8 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_arch = new StringBuilder("-a 3");
         public static StringBuilder param_model = new StringBuilder("");
         public static StringBuilder param_color = new StringBuilder("RGB");
-        public static StringBuilder param_block = new StringBuilder("-l 64");
-        public static StringBuilder param_batch = new StringBuilder("-b 8");
+        public static StringBuilder param_block = new StringBuilder("-l 128");
+        public static StringBuilder param_batch = new StringBuilder("-b 16");
         public static StringBuilder param_mode = new StringBuilder("noise_scale");
         public static StringBuilder param_device = new StringBuilder("");
         public static StringBuilder param_tta = new StringBuilder("");
@@ -330,9 +330,9 @@ namespace waifu2x_chainer_gui
         {
             string msg =
                 "Multilingual GUI for waifu2x-chainer\n" +
-                "nanashi (2018)\n" +
-                "Version 1.2\n" +
-                "BuildDate: 4 Oct,2018\n" +
+                "f11894 (2018)\n" +
+                "Version 1.2.1\n" +
+                "BuildDate: 2 Nov,2018\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
