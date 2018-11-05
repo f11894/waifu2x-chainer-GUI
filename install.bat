@@ -98,9 +98,9 @@ xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-master" "C:\waifu2x-chainer"||call :er
 if not exist "C:\waifu2x-chainer\waifu2x.py" call :error_end 5
 pushd "C:\waifu2x-chainer"
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\activate.bat" "%Anaconda_dir%"
-call Python waifu2x.py -m scale -i images\small.png -g 0 -o nul 2>&1 >>%install_log%
-call Python waifu2x.py -m scale -i images\small.png -o nul 2>&1 >>%install_log%||call :error_end 5
-call "%Anaconda_dir%\Scripts\deactivate.bat"
+call Python waifu2x.py -m scale -i images\small.png -g 0 -o "%TEMP%\hoge.png" >>%install_log% 2>&1
+call Python waifu2x.py -m scale -i images\small.png -o "%TEMP%\hoge.png" >>%install_log% 2>&1||call :error_end 5
+if defined Anaconda_dir call "%Anaconda_dir%\Scripts\deactivate.bat"
 popd
 
 rd /s /q "%TEMP%\waifu2x-chainer-master"
