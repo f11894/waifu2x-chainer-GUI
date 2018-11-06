@@ -15,6 +15,9 @@ set ss=%time_tmp:~6,2%
 set sss=%time_tmp:~9,2%
 set datetime=%yyyy%%mm%%dd%%hh%%mi%%ss%%sss%
 set install_log="%~dp0install_log_%datetime%.txt"
+set Anaconda_setup_url="%TEMP%\Anaconda_setup_%RANDOM%_%RANDOM%_%RANDOM%.txt"
+set Anaconda_setup_bat="%TEMP%\Anaconda_setup_%RANDOM%_%RANDOM%_%RANDOM%.bat"
+set Anaconda_setup_exe="%TEMP%\Anaconda_setup_%RANDOM%_%RANDOM%_%RANDOM%.exe"
 
 ver>>%install_log%
 echo.>>%install_log%
@@ -33,54 +36,55 @@ python -h >nul 2>&1||goto install_python
 
 :not_install_python
 echo install_python=no>>%install_log%
-python -m pip install -U pip
-pip install chainer
-if defined cuda_ver pip install cupy-cuda%cuda_ver%
-pip install wand
-pip install pillow
+pip install chainer >>%install_log% 2>&1
+if defined cuda_ver pip install cupy-cuda%cuda_ver% >>%install_log% 2>&1
+pip install wand >>%install_log% 2>&1
+pip install pillow >>%install_log% 2>&1
 goto install_waifu2x-chainer
 
 :install_python
 echo install_python=yes>>%install_log%
 if "%PROCESSOR_ARCHITECTURE%" EQU "x86" (
-   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o "%TEMP%\anaconda_download.txt" >nul 2>&1
-   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86.exe)\x22.*/$1/" "%TEMP%\anaconda_download.txt" >nul 2>&1 ||call :error_end 1
-   set /p conda_URL=<"%TEMP%\anaconda_download.txt"
+   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o %Anaconda_setup_url% >nul 2>&1
+   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
+   set /p conda_URL=<%Anaconda_setup_url%
 )
 if "%PROCESSOR_ARCHITECTURE%" EQU "AMD64" (
-   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o "%TEMP%\anaconda_download.txt" >nul 2>&1
-   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86_64.exe)\x22.*/$1/" "%TEMP%\anaconda_download.txt" >nul 2>&1 ||call :error_end 1
-   set /p conda_URL=<"%TEMP%\anaconda_download.txt"
+   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o %Anaconda_setup_url% >nul 2>&1
+   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86_64.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
+   set /p conda_URL=<%Anaconda_setup_url%
 )
-del "%TEMP%\anaconda_download.txt"
+del %Anaconda_setup_url%
 echo "%conda_URL%"|findstr /X ".https://repo\.anaconda\.com/archive/Anaconda3[^/]*Windows-[^/]*.exe." >nul ||call :error_end 1
 echo Download Anaconda
 
 echo.
-curl -H %UA% --retry 10 --fail -o "%TEMP%\Anaconda_Windows-setup.exe" "%conda_URL%"
+curl -H %UA% --retry 10 --fail -o %Anaconda_setup_exe% "%conda_URL%"
 if not "%ERRORLEVEL%"=="0" call :error_end 2
 echo.
 echo Install Anaconda
 echo.
 
-echo start /wait "" "%TEMP%\Anaconda_Windows-setup.exe" /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S /D=%UserProfile%\AppData\Local\Continuum\anaconda3>"%TEMP%\Anaconda_Windows-setup.bat"
-echo exit /b>>"%TEMP%\Anaconda_Windows-setup.bat"
-powershell Start-Process "%TEMP%\Anaconda_Windows-setup.bat" -Wait -Verb runas
-del "%TEMP%\Anaconda_Windows-setup.bat"
-del "%TEMP%\Anaconda_Windows-setup.exe"
+echo %Anaconda_setup_exe% /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S /D=%UserProfile%\AppData\Local\Continuum\anaconda3 >>%install_log% 2>&1
+echo start /wait "" %Anaconda_setup_exe% /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S /D=%UserProfile%\AppData\Local\Continuum\anaconda3>%Anaconda_setup_bat%
+echo exit /b>>%Anaconda_setup_bat%
+powershell Start-Process %Anaconda_setup_bat% -Wait -Verb runas
+del %Anaconda_setup_bat%
+del %Anaconda_setup_exe%
 
 if exist "%UserProfile%\Anaconda3" set "Anaconda_dir=%UserProfile%\Anaconda3"
 if exist "%UserProfile%\AppData\Local\Continuum\anaconda3" set "Anaconda_dir=%UserProfile%\AppData\Local\Continuum\anaconda3"
 if not defined Anaconda_dir call :error_end 4
+echo Anaconda_dir %Anaconda_dir% >>%install_log% 2>&1
 
 pushd "%Anaconda_dir%"
 call "%Anaconda_dir%\Scripts\activate.bat" "%Anaconda_dir%"
-call conda update conda -y
-call conda update --all -y
-call pip install chainer
-if defined cuda_ver call pip install cupy-cuda%cuda_ver%
-call pip install wand
-call pip install pillow
+call conda update conda -y >>%install_log% 2>&1
+call conda update --all -y >>%install_log% 2>&1
+call pip install chainer >>%install_log% 2>&1
+if defined cuda_ver call pip install cupy-cuda%cuda_ver% >>%install_log% 2>&1
+call pip install wand >>%install_log% 2>&1
+call pip install pillow >>%install_log% 2>&1
 call "%Anaconda_dir%\Scripts\deactivate.bat"
 popd
 
@@ -92,13 +96,13 @@ echo Download waifu2x-chainer
 echo.
 curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/master.zip"
 if not "%ERRORLEVEL%"=="0" call :error_end 3
-7za.exe x -y -o"%TEMP%\" "%TEMP%\waifu2x-chainer.zip"
+7za.exe x -y -o"%TEMP%\" "%TEMP%\waifu2x-chainer.zip" >>%install_log% 2>&1
 del "%TEMP%\waifu2x-chainer.zip"
-xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-master" "C:\waifu2x-chainer"||call :error_end 5
+xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-master" "C:\waifu2x-chainer" >>%install_log% 2>&1||call :error_end 5
 if not exist "C:\waifu2x-chainer\waifu2x.py" call :error_end 5
 pushd "C:\waifu2x-chainer"
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\activate.bat" "%Anaconda_dir%"
-call Python waifu2x.py -m scale -i images\small.png -g 0 -o "%TEMP%\hoge.png" >>%install_log% 2>&1
+call Python waifu2x.py -m scale -i images\small.png -g 0 -o "%TEMP%\hoge.png" >>%install_log% 2>&1&&echo Successfully installed cupy.
 call Python waifu2x.py -m scale -i images\small.png -o "%TEMP%\hoge.png" >>%install_log% 2>&1||call :error_end 5
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\deactivate.bat"
 popd
@@ -106,7 +110,7 @@ popd
 rd /s /q "%TEMP%\waifu2x-chainer-master"
 :end
 echo.
-echo successful Installation.
+echo successful Installation.&echo successful Installation.>>%install_log%
 pause
 exit
 
