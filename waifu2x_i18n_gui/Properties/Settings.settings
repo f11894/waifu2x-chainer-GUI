@@ -50,5 +50,11 @@
     <Setting Name="color_mode" Type="System.String" Scope="User">
       <Value Profile="(Default)">RGB</Value>
     </Setting>
+    <Setting Name="output_format" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="output_quality" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

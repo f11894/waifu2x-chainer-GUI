@@ -70,6 +70,12 @@ namespace waifu2x_chainer_gui
                 txtDevice.Text = Properties.Settings.Default.Device_ID;
             }
 
+            txtOutQuality.Clear();
+
+            if (Properties.Settings.Default.output_quality != 0)
+            { txtOutQuality.Text = Properties.Settings.Default.output_quality.ToString(); }
+
+            txtOutExt.SelectedValue = Properties.Settings.Default.output_format;
             btn128.IsChecked = true;
 
             if (Properties.Settings.Default.block_size == "256")
@@ -164,7 +170,8 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_src= new StringBuilder("");
         public static StringBuilder param_dst = new StringBuilder("");
         public static StringBuilder param_informat = new StringBuilder("*.jpg *.jpeg *.png *.bmp *.tif *.tiff");
-        //public static StringBuilder param_outformat = new StringBuilder("png");
+        public static StringBuilder param_outformat = new StringBuilder("png");
+        public static StringBuilder param_outquality = new StringBuilder("100");
         public static StringBuilder param_mag = new StringBuilder("2");
         public static StringBuilder param_denoise = new StringBuilder("");
         public static StringBuilder param_denoise2 = new StringBuilder("");
@@ -177,7 +184,6 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_device = new StringBuilder("");
         public static StringBuilder param_tta = new StringBuilder("");
         public static StringBuilder param_WorkingDirectory = new StringBuilder("");
-        public static StringBuilder param_outformat = new StringBuilder(".png");
         public static StringBuilder param_width = new StringBuilder("");
         public static StringBuilder param_height = new StringBuilder("");
 
@@ -217,6 +223,19 @@ namespace waifu2x_chainer_gui
                 Properties.Settings.Default.output_dir = "null";
             }
 
+            Properties.Settings.Default.output_format = txtOutExt.SelectedValue.ToString();
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(
+                txtOutQuality.Text,
+                @"^\d+$",
+                System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                Properties.Settings.Default.output_quality = double.Parse(txtOutQuality.Text);
+            }
+            else
+            {
+                Properties.Settings.Default.output_quality = 0;
+            }
 
             if (Directory.Exists(this.txtWaifu2x_chainerPath.Text))
             {
@@ -681,7 +700,29 @@ namespace waifu2x_chainer_gui
             param_mag.Append("-s ");
             param_mag.Append(this.slider_value.Text);
 
+            param_outformat.Clear();
+            if (txtOutExt.Text != "png")
+            {
+                param_outformat.Append("--extension " + txtOutExt.Text);
+            }
             // 数字が入力されてなかったらクリアする
+            param_outquality.Clear();
+            if (txtOutQuality.Text != "")
+            {
+                if (txtOutExt.Text == "jpg" || txtOutExt.Text == "webp")
+                    if (System.Text.RegularExpressions.Regex.IsMatch(
+                    txtOutQuality.Text,
+                    @"^\d+$",
+                    System.Text.RegularExpressions.RegexOptions.ECMAScript))
+                    {
+                        { param_outquality.Append("--quality " + txtOutQuality.Text); }
+                    }
+                    else
+                    {
+                        txtOutQuality.Clear();
+                    }
+
+            }
 
             param_width.Clear();
             if (!System.Text.RegularExpressions.Regex.IsMatch(
@@ -785,7 +826,8 @@ namespace waifu2x_chainer_gui
                 param_src.ToString(),
                 param_dst.ToString(),
                 // param_informat.ToString(),
-                // param_outformat.ToString(),
+                param_outformat.ToString(),
+                param_outquality.ToString(),
                 param_mode.ToString(),
                 param_mag.ToString(),
                 param_width.ToString(),

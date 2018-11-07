@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:waifu2x_chainer_gui"
         mc:Ignorable="d"
         Closing="MainWindow_Closing"  
-        Height="515" Width="828"
-        MinHeight="550" MinWidth="828"
-        MaxHeight="550" MaxWidth="828"
+        Height="545" Width="828"
+        MinHeight="580" MinWidth="828"
+        MaxHeight="580" MaxWidth="828"
         ResizeMode="CanMinimize"
         Title="{DynamicResource ResourceKey=MainWnd_Title}" SizeToContent="WidthAndHeight" Background="LightGray">
     <Grid>
@@ -55,6 +55,18 @@
                         <TextBox Name="txtDstPath" MinWidth="600" MaxWidth="600" AllowDrop="True" PreviewDragEnter="On_DragOver" PreviewDragOver="On_DragOver" PreviewDrop="On_DstDrop" ToolTip="{DynamicResource ResourceKey=Main_IO_Dst_Tooltip}"></TextBox>
                         <Button Name="btnOpenDst" HorizontalAlignment="Right" Content="{DynamicResource ResourceKey=Main_IO_btnDst}" Click="OnBtnDst"></Button>
                         <Button Name="btnDstClear" HorizontalAlignment="Right" Content="{DynamicResource ResourceKey=Main_IO_DstClear}" Click="OnDstClear"></Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="3" HorizontalAlignment="Stretch">
+                        <Label Target="{Binding ElementName=txtOutExt}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFiletype}"></Label>
+                        <ComboBox Name="txtOutExt" MinWidth="50" HorizontalAlignment="Stretch" SelectedValuePath="Tag">
+                            <ComboBoxItem Tag="0" Content="png" IsSelected="True"/>
+                            <ComboBoxItem Tag="1" Content="jpg"/>
+                            <ComboBoxItem Tag="2" Content="webp"/>
+                            <ComboBoxItem Tag="3" Content="bmp"/>
+                            <ComboBoxItem Tag="4" Content="tiff"/>
+                        </ComboBox>
+                        <Label Target="{Binding ElementName=txtOutQuality}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFilequality}"></Label>
+                        <TextBox Name="txtOutQuality" MinWidth="50" MaxWidth="50"  HorizontalAlignment="Stretch" Text=""></TextBox>
                     </StackPanel>
                     <Label Target="{Binding ElementName=slider_zoom}" Content="{DynamicResource ResourceKey=Main_Mode_Mag}"></Label>
                     <StackPanel Orientation="Horizontal" Margin="3" HorizontalAlignment="Stretch">

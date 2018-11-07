@@ -214,5 +214,29 @@ namespace waifu2x_chainer_gui.Properties {
                 this["color_mode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string output_format {
+            get {
+                return ((string)(this["output_format"]));
+            }
+            set {
+                this["output_format"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double output_quality {
+            get {
+                return ((double)(this["output_quality"]));
+            }
+            set {
+                this["output_quality"] = value;
+            }
+        }
     }
 }

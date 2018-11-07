@@ -16,7 +16,8 @@
     <sys:String x:Key="Main_IO_SrcClear">Clear</sys:String>
     <sys:String x:Key="Main_IO_btnDst">Choose Dst</sys:String>
     <sys:String x:Key="Main_IO_DstClear">Clear</sys:String>
-    <sys:String x:Key="Main_IO_btnReset">Reset</sys:String>
+    <sys:String x:Key="Main_IO_OutFiletype">Output extension:</sys:String>
+    <sys:String x:Key="Main_IO_OutFilequality">Output quality:</sys:String>
     <sys:String x:Key="Main_IO_Src_Tooltip">Filename or folder path. REQUIRED field</sys:String>
     <sys:String x:Key="Main_IO_Dst_Tooltip">Filename or folder path. If empty, generate a new file in the source folder</sys:String>
     <!-- Tab:Mode -->
