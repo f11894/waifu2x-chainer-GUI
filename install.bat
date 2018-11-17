@@ -26,10 +26,10 @@ PowerShell Get-Host | find "Version">>%install_log%||call :error_end 0
 
 cd tools
 nvcc -V >nul 2>&1 || goto Check_if_python_is_installed
-nvcc -V|find "Cuda compilation tools, release 8.0" >nul&&set cuda_ver=80
-nvcc -V|find "Cuda compilation tools, release 9.0" >nul&&set cuda_ver=90
-nvcc -V|find "Cuda compilation tools, release 9.1" >nul&&set cuda_ver=91
-nvcc -V|find "Cuda compilation tools, release 9.2" >nul&&set cuda_ver=92
+nvcc -V|find "Cuda compilation tools, release 8.0" >>%install_log% &&set cuda_ver=80
+nvcc -V|find "Cuda compilation tools, release 9.0" >>%install_log% &&set cuda_ver=90
+nvcc -V|find "Cuda compilation tools, release 9.1" >>%install_log% &&set cuda_ver=91
+nvcc -V|find "Cuda compilation tools, release 9.2" >>%install_log% &&set cuda_ver=92
 
 :Check_if_python_is_installed
 python -h >nul 2>&1||goto install_python
@@ -56,13 +56,15 @@ if "%PROCESSOR_ARCHITECTURE%" EQU "AMD64" (
 )
 del %Anaconda_setup_url%
 echo "%conda_URL%"|findstr /X ".https://repo\.anaconda\.com/archive/Anaconda3[^/]*Windows-[^/]*.exe." >nul ||call :error_end 1
-echo Download Anaconda
+echo "%conda_URL%" >>%install_log%
+echo Anacondaのインストーラーをダウンロードしています
 
 echo.
 curl -H %UA% --retry 10 --fail -o %Anaconda_setup_exe% "%conda_URL%"
 if not "%ERRORLEVEL%"=="0" call :error_end 2
 echo.
-echo Install Anaconda
+echo Anacondaをインストールしています
+echo 非常に時間が掛かりますがウィンドウを閉じずにそのままお待ち下さい
 echo.
 
 echo %Anaconda_setup_exe% /InstallationType=JustMe /RegisterPython=1 /AddToPath=1 /S /D=%UserProfile%\AppData\Local\Continuum\anaconda3 >>%install_log% 2>&1
@@ -92,7 +94,7 @@ goto install_waifu2x-chainer
 
 :install_waifu2x-chainer
 echo.
-echo Download waifu2x-chainer
+echo waifu2x-chainerをインストールしています
 echo.
 curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/master.zip"
 if not "%ERRORLEVEL%"=="0" call :error_end 3
@@ -102,7 +104,7 @@ xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-master" "C:\waifu2x-chainer" >>%instal
 if not exist "C:\waifu2x-chainer\waifu2x.py" call :error_end 5
 pushd "C:\waifu2x-chainer"
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\activate.bat" "%Anaconda_dir%"
-call Python waifu2x.py -m scale -i images\small.png -g 0 -o "%TEMP%\hoge.png" >>%install_log% 2>&1&&echo Successfully installed cupy.
+call Python waifu2x.py -m scale -i images\small.png -g 0 -o "%TEMP%\hoge.png" >>%install_log% 2>&1&&set installed_cupy=true
 call Python waifu2x.py -m scale -i images\small.png -o "%TEMP%\hoge.png" >>%install_log% 2>&1||call :error_end 5
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\deactivate.bat"
 popd
@@ -110,17 +112,40 @@ popd
 rd /s /q "%TEMP%\waifu2x-chainer-master"
 :end
 echo.
-echo successful Installation.&echo successful Installation.>>%install_log%
+if "%installed_cupy%"=="true" (
+   echo waifu2x-chainerとcupyのインストールに成功しました
+   echo waifu2x-chainerとcupyのインストールに成功しました>>%install_log%
+) else (
+   echo waifu2x-chainerのインストールに成功しました
+   echo waifu2x-chainerのインストールに成功しました>>%install_log%
+)
 pause
 exit
 
 :error_end
-if "%~1"=="0" echo Error PowerShell is not installed.&echo Error PowerShell is not installed.>>%install_log%
-if "%~1"=="1" echo Error URL acquisition failed.&echo Error URL acquisition failed.>>%install_log%
-if "%~1"=="2" echo Error failed to download anaconda.&echo Error failed to download anaconda.>>%install_log%
-if "%~1"=="3" echo Error failed to download waifu2x-chainer.&echo Error failed to download waifu2x-chainer.>>%install_log%
-if "%~1"=="4" echo Error Anaconda installation location could not be found.&echo Error Anaconda installation location could not be found.>>%install_log%
-if "%~1"=="5" echo Error Installation of waifu2x-chainer failed.&echo Error Installation of waifu2x-chainer failed.>>%install_log%
-
+if "%~1"=="0" (
+   echo エラー PowerShellがインストールされていません
+   echo エラー PowerShellがインストールされていません>>%install_log%
+)
+if "%~1"=="1" (
+   echo エラー URLの取得に失敗しました
+   echo エラー URLの取得に失敗しました>>%install_log%
+)
+if "%~1"=="2" (
+   echo エラー Anacondaのダウンロードに失敗しました
+   echo エラー Anacondaのダウンロードに失敗しました>>%install_log%
+)
+if "%~1"=="3" (
+   echo エラー waifu2x-chainerのダウンロードに失敗しました
+   echo エラー waifu2x-chainerのダウンロードに失敗しました>>%install_log%
+)
+if "%~1"=="4" (
+   echo エラー Anacondaのインストール場所が見つかりませんでした
+   echo エラー Anacondaのインストール場所が見つかりませんでした>>%install_log%
+)
+if "%~1"=="5" (
+   echo エラー waifu2x-chainerのインストールに失敗しました
+   echo エラー waifu2x-chainerのインストールに失敗しました>>%install_log%
+)
 pause
 exit
