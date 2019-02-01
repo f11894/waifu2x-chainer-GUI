@@ -96,7 +96,7 @@ goto install_waifu2x-chainer
 echo.
 echo waifu2x-chainerをインストールしています
 echo.
-curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/master.zip"
+curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/v1.9.0.zip"
 if not "%ERRORLEVEL%"=="0" call :error_end 3
 7za.exe x -y -o"%TEMP%\" "%TEMP%\waifu2x-chainer.zip" >>%install_log% 2>&1
 del "%TEMP%\waifu2x-chainer.zip"
