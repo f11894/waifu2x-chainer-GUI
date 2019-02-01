@@ -1,5 +1,5 @@
 @echo off
-set UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
+set UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.81 Safari/537.36"
 set "date2=%date:/=%"
 set "time2=%time:^:=_%"
 set "time2=%time: =0%"
@@ -45,13 +45,13 @@ goto install_waifu2x-chainer
 :install_python
 echo install_python=yes>>%install_log%
 if "%PROCESSOR_ARCHITECTURE%" EQU "x86" (
-   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o %Anaconda_setup_url% >nul 2>&1
-   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
+   curl -H %UA% -s "https://www.anaconda.com/distribution/#windows" -o %Anaconda_setup_url% >nul 2>&1
+   mfind /W /M "/.*\x22 *(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
    set /p conda_URL=<%Anaconda_setup_url%
 )
 if "%PROCESSOR_ARCHITECTURE%" EQU "AMD64" (
-   curl -H %UA% -s "https://www.anaconda.com/download/#windows" -o %Anaconda_setup_url% >nul 2>&1
-   mfind /W /M "/.*\x22(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86_64.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
+   curl -H %UA% -s "https://www.anaconda.com/distribution/#windows" -o %Anaconda_setup_url% >nul 2>&1
+   mfind /W /M "/.*\x22 *(https:\/\/repo\.anaconda\.com\/archive\/Anaconda3[^\/]*?Windows-x86_64.exe)\x22.*/$1/" %Anaconda_setup_url% >nul 2>&1 ||call :error_end 1
    set /p conda_URL=<%Anaconda_setup_url%
 )
 del %Anaconda_setup_url%
