@@ -96,11 +96,11 @@ goto install_waifu2x-chainer
 echo.
 echo waifu2x-chainerをインストールしています
 echo.
-curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/v1.9.0.zip"
+curl -H %UA% --fail --retry 5 -o "%TEMP%\waifu2x-chainer.zip" -L "https://github.com/tsurumeso/waifu2x-chainer/archive/v1.9.1.zip"
 if not "%ERRORLEVEL%"=="0" call :error_end 3
 7za.exe x -y -o"%TEMP%\" "%TEMP%\waifu2x-chainer.zip" >>%install_log% 2>&1
 del "%TEMP%\waifu2x-chainer.zip"
-xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-1.9.0" "C:\waifu2x-chainer" >>%install_log% 2>&1||call :error_end 5
+xcopy /E /I /H /y "%TEMP%\waifu2x-chainer-1.9.1" "C:\waifu2x-chainer" >>%install_log% 2>&1||call :error_end 5
 if not exist "C:\waifu2x-chainer\waifu2x.py" call :error_end 5
 pushd "C:\waifu2x-chainer"
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\activate.bat" "%Anaconda_dir%"
@@ -109,7 +109,7 @@ call Python waifu2x.py -m scale -i images\small.png -o "%TEMP%\hoge.png" >>%inst
 if defined Anaconda_dir call "%Anaconda_dir%\Scripts\deactivate.bat"
 popd
 
-rd /s /q "%TEMP%\waifu2x-chainer-1.9.0"
+rd /s /q "%TEMP%\waifu2x-chainer-1.9.1"
 :end
 echo.
 if "%installed_cupy%"=="true" (
