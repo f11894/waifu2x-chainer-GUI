@@ -2,9 +2,6 @@ version: 1.0.{build}
 image: Visual Studio 2017
 configuration: Release
 platform: x86
-init:
-  - ps: Set-WinSystemLocale ja-JP
-  - ps: Restart-Computer
 build:
   project: waifu2x_chainer_gui.sln
   verbosity: normal
