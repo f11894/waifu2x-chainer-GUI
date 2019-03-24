@@ -4,7 +4,6 @@ configuration: Release
 platform: x86
 init:
   - ps: Set-WinSystemLocale ja-JP
-  - ps: Start-Sleep -s 5
   - ps: Restart-Computer
 build:
   project: waifu2x_chainer_gui.sln
