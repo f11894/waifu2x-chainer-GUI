@@ -372,12 +372,10 @@ namespace waifu2x_chainer_gui
 
         private void OnBtnDst(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog fdlg = new SaveFileDialog();
-            fdlg.Filter = "PNG Image | *.png";
-            fdlg.DefaultExt = "png";
-            if (fdlg.ShowDialog() == true)
+            var dlg = new Forms.FolderBrowserDialog();
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                this.txtDstPath.Text = fdlg.FileName;
+                this.txtDstPath.Text = dlg.SelectedPath;
             }
         }
 
@@ -388,16 +386,9 @@ namespace waifu2x_chainer_gui
 
         private void OnWaifu2x_chainerPath(object sender, RoutedEventArgs e)
         {
-            // フォルダー参照ダイアログのインスタンスを生成
             var dlg = new Forms.FolderBrowserDialog();
-
-            // 説明文を設定
-            // dlg.Description = "フォルダーを選択してください。";
-
-            // ダイアログを表示
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                // 選択されたフォルダーパスをメッセージボックスに表示
                 this.txtWaifu2x_chainerPath.Text = dlg.SelectedPath;
             }
         }
