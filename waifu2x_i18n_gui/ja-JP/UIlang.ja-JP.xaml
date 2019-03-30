@@ -28,6 +28,8 @@
     <sys:String x:Key="Main_Mode_Mag">拡大率 (1.0~10.0):</sys:String>
     <sys:String x:Key="Main_Mode_output_width">横幅を指定:</sys:String>
     <sys:String x:Key="Main_Mode_output_height">縦幅を指定:</sys:String>
+    <sys:String x:Key="Main_Mode_shorter_side">短辺を指定:</sys:String>
+    <sys:String x:Key="Main_Mode_longer_side">長辺を指定:</sys:String>
     <sys:String x:Key="Main_Mode_Denoise">ノイズ除去</sys:String>
     <sys:String x:Key="Main_Mode_Denoise_None">なし</sys:String>
     <sys:String x:Key="Main_Mode_Denoise_0">レベル0</sys:String>

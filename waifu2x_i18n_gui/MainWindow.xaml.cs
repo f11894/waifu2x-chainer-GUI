@@ -140,13 +140,17 @@ namespace waifu2x_chainer_gui
             if (Properties.Settings.Default.output_height != 0)
             { output_height.Text = Properties.Settings.Default.output_height.ToString(); }
 
-            if (this.output_width.Text.Trim() != "")
-            {
-                slider_zoom.IsEnabled = false;
-                slider_value.IsEnabled = false;
-            }
+            shorter_side.Clear();
 
-            if (this.output_height.Text.Trim() != "")
+            if (Properties.Settings.Default.shorter_side != 0)
+            { shorter_side.Text = Properties.Settings.Default.shorter_side.ToString(); }
+
+            longer_side.Clear();
+
+            if (Properties.Settings.Default.longer_side != 0)
+            { longer_side.Text = Properties.Settings.Default.longer_side.ToString(); }
+
+            if (this.output_width.Text.Trim() != "" || this.output_height.Text.Trim() != "" || this.shorter_side.Text.Trim() != "" || this.longer_side.Text.Trim() != "")
             {
                 slider_zoom.IsEnabled = false;
                 slider_value.IsEnabled = false;
@@ -186,6 +190,8 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_WorkingDirectory = new StringBuilder("");
         public static StringBuilder param_width = new StringBuilder("");
         public static StringBuilder param_height = new StringBuilder("");
+        public static StringBuilder param_shorter_side = new StringBuilder("");
+        public static StringBuilder param_longer_side = new StringBuilder("");
 
         public static StringBuilder param_waifu2x_chainer_path = new StringBuilder("C:\\waifu2x-chainer");
 
@@ -317,6 +323,31 @@ namespace waifu2x_chainer_gui
             else
             {
                 Properties.Settings.Default.output_height = 0;
+            }
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(
+                shorter_side.Text,
+                @"^\d+$",
+                System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                Properties.Settings.Default.shorter_side = double.Parse(shorter_side.Text);
+            }
+            else
+            {
+                Properties.Settings.Default.shorter_side = 0;
+            }
+
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(
+                longer_side.Text,
+                @"^\d+$",
+                System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                Properties.Settings.Default.longer_side = double.Parse(longer_side.Text);
+            }
+            else
+            {
+                Properties.Settings.Default.longer_side = 0;
             }
 
             Properties.Settings.Default.Save();
@@ -452,8 +483,10 @@ namespace waifu2x_chainer_gui
             {
                output_width.IsEnabled = true;
                output_height.IsEnabled = true;
-               if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") 
-               {
+               shorter_side.IsEnabled = true;
+               longer_side.IsEnabled = true;
+                if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") if (this.shorter_side.Text.Trim() == "") if (this.longer_side.Text.Trim() == "")
+                            {
                   slider_zoom.IsEnabled = true;
                   slider_value.IsEnabled = true;
                }
@@ -469,6 +502,8 @@ namespace waifu2x_chainer_gui
             { 
               output_width.IsEnabled = false;
               output_height.IsEnabled = false;
+              shorter_side.IsEnabled = false;
+              longer_side.IsEnabled = false;
               slider_zoom.IsEnabled = false;
               slider_value.IsEnabled = false;
             }
@@ -476,20 +511,14 @@ namespace waifu2x_chainer_gui
 
         private void OutputSize_TextChanged(object sender, EventArgs e)
         {
-
-            if (btnModeNoise.IsChecked == false) if (this.output_width.Text.Trim() != "")
-                {
-                slider_zoom.IsEnabled = false;
-                slider_value.IsEnabled = false;
-            }
-
-            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() != "")
+            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() != "" || this.output_width.Text.Trim() != "" || this.shorter_side.Text.Trim() != "")
             {
                 slider_zoom.IsEnabled = false;
                 slider_value.IsEnabled = false;
             }
-            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "")
-                {
+
+            if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") if (this.shorter_side.Text.Trim() == "")
+                        {
                     slider_zoom.IsEnabled = true;
                     slider_value.IsEnabled = true;
                 }
@@ -742,6 +771,35 @@ namespace waifu2x_chainer_gui
                 param_height.Append("-H " + this.output_height.Text);
             }
 
+            param_shorter_side.Clear();
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+            shorter_side.Text,
+            @"^\d+$",
+            System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                shorter_side.Clear();
+
+            }
+            else
+            {
+                param_mag.Clear();
+                param_shorter_side.Append("-S " + this.shorter_side.Text);
+            }
+
+            param_longer_side.Clear();
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                longer_side.Text,
+                @"^\d+$",
+                System.Text.RegularExpressions.RegexOptions.ECMAScript))
+            {
+                longer_side.Clear();
+            }
+            else
+            {
+                param_mag.Clear();
+                param_longer_side.Append("-L " + this.longer_side.Text);
+            }
+
             if (System.Text.RegularExpressions.Regex.IsMatch(
                 txtDevice.Text,
                 @"^(\d+)$",
@@ -802,6 +860,8 @@ namespace waifu2x_chainer_gui
             {
                 param_width.Clear();
                 param_height.Clear();
+                param_shorter_side.Clear();
+                param_longer_side.Clear();
                 param_mag.Clear();
             }
             if (param_mode.ToString() == "-m scale")
@@ -823,6 +883,8 @@ namespace waifu2x_chainer_gui
                 param_mag.ToString(),
                 param_width.ToString(),
                 param_height.ToString(),
+                param_shorter_side.ToString(),
+                param_longer_side.ToString(),
                 param_denoise2.ToString(),
                 param_arch.ToString(),
                 param_model.ToString(),

@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:waifu2x_chainer_gui"
         mc:Ignorable="d"
         Closing="MainWindow_Closing"  
-        Height="545" Width="828"
-        MinHeight="580" MinWidth="828"
-        MaxHeight="580" MaxWidth="828"
+        Height="595" Width="828"
+        MinHeight="630" MinWidth="828"
+        MaxHeight="630" MaxWidth="828"
         ResizeMode="CanMinimize"
         Title="{DynamicResource ResourceKey=MainWnd_Title}" SizeToContent="WidthAndHeight" Background="LightGray">
     <Grid>
@@ -78,6 +78,14 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Label Target="{Binding ElementName=output_height}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_output_height}"></Label>
                                     <TextBox Name="output_height" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Target="{Binding ElementName=shorter_side}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_shorter_side}"></Label>
+                                    <TextBox Name="shorter_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Target="{Binding ElementName=longer_side}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_longer_side}"></Label>
+                                    <TextBox Name="longer_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
