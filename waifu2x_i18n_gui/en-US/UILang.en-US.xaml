@@ -19,7 +19,7 @@
     <sys:String x:Key="Main_IO_OutFiletype">Output extension:</sys:String>
     <sys:String x:Key="Main_IO_OutFilequality">Output quality:</sys:String>
     <sys:String x:Key="Main_IO_Src_Tooltip">Filename or folder path. REQUIRED field</sys:String>
-    <sys:String x:Key="Main_IO_Dst_Tooltip">Filename or folder path. If empty, generate a new file in the source folder</sys:String>
+    <sys:String x:Key="Main_IO_Dst_Tooltip">Output destination folder path. If empty, generate a new file in the source folder</sys:String>
     <!-- Tab:Mode -->
     <sys:String x:Key="Main_Mode_Set">Conversion Mode</sys:String>
     <sys:String x:Key="Main_Mode_Set_NoiseScale">Denoise &amp; Magnify</sys:String>

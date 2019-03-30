@@ -19,7 +19,7 @@
     <sys:String x:Key="Main_IO_OutFiletype">出力拡張子</sys:String>
     <sys:String x:Key="Main_IO_OutFilequality">出力画質設定:</sys:String>
     <sys:String x:Key="Main_IO_Src_Tooltip">画像名もしくはフォルダ名（必要）</sys:String>
-    <sys:String x:Key="Main_IO_Dst_Tooltip">画像名もしくはフォルダ名。空白の場合、入力画像と同じフォルダに新しい画像を生成する</sys:String>
+    <sys:String x:Key="Main_IO_Dst_Tooltip">出力先のフォルダ。空白の場合、入力画像と同じフォルダに新しい画像を生成する</sys:String>
     <!-- Tab:Mode -->
     <sys:String x:Key="Main_Mode_Set">変換モード</sys:String>
     <sys:String x:Key="Main_Mode_Set_NoiseScale">ノイズ除去と拡大</sys:String>
