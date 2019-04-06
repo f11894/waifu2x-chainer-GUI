@@ -30,6 +30,8 @@ nvcc -V|find "Cuda compilation tools, release 8.0" >>%install_log% &&set cuda_ve
 nvcc -V|find "Cuda compilation tools, release 9.0" >>%install_log% &&set cuda_ver=90
 nvcc -V|find "Cuda compilation tools, release 9.1" >>%install_log% &&set cuda_ver=91
 nvcc -V|find "Cuda compilation tools, release 9.2" >>%install_log% &&set cuda_ver=92
+nvcc -V|find "Cuda compilation tools, release 10.0" >>%install_log% &&set cuda_ver=100
+nvcc -V|find "Cuda compilation tools, release 10.1" >>%install_log% &&set cuda_ver=101
 
 :Check_if_python_is_installed
 python -h >nul 2>&1||goto install_python
