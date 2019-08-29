@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:waifu2x_chainer_gui"
         mc:Ignorable="d"
         Closing="MainWindow_Closing"  
-        Height="595" Width="828"
-        MinHeight="630" MinWidth="828"
-        MaxHeight="630" MaxWidth="828"
+        Height="465" Width="1000"
+        MinHeight="500" MinWidth="1000"
+        MaxHeight="500" MaxWidth="1000"
         ResizeMode="CanMinimize"
         Title="{DynamicResource ResourceKey=MainWnd_Title}" SizeToContent="WidthAndHeight" Background="LightGray">
     <Grid>
@@ -65,31 +65,6 @@
                         <Label Target="{Binding ElementName=txtOutQuality}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_IO_OutFilequality}"></Label>
                         <TextBox Name="txtOutQuality" MinWidth="50" MaxWidth="50"  HorizontalAlignment="Stretch" Text=""></TextBox>
                     </StackPanel>
-                    <Label Target="{Binding ElementName=slider_zoom}" Content="{DynamicResource ResourceKey=Main_Mode_Mag}"></Label>
-                    <StackPanel Orientation="Horizontal" Margin="3" HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal">
-                            <Slider Name="slider_zoom" Minimum="1.0" Maximum="10.0" Margin="15" MinWidth="550" Value="2" TickPlacement="BottomRight" TickFrequency="0.5" IsSnapToTickEnabled="True"></Slider>
-                            <TextBox Name="slider_value" HorizontalAlignment="Right" MaxHeight="20" MinWidth="50" MaxWidth="50" Margin="1" Text="{Binding ElementName=slider_zoom, Path=Value, Mode=TwoWay}" ></TextBox>
-                            <StackPanel Orientation="vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Target="{Binding ElementName=output_width}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_output_width}"></Label>
-                                    <TextBox Name="output_width" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged" ></TextBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Target="{Binding ElementName=output_height}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_output_height}"></Label>
-                                    <TextBox Name="output_height" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Target="{Binding ElementName=shorter_side}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_shorter_side}"></Label>
-                                    <TextBox Name="shorter_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Target="{Binding ElementName=longer_side}" HorizontalAlignment="Left" Content="{DynamicResource ResourceKey=Main_Mode_longer_side}"></Label>
-                                    <TextBox Name="longer_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" TextChanged="OutputSize_TextChanged"></TextBox>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="3">
                         <GroupBox Name="gpMode" Header="{DynamicResource ResourceKey=Main_Mode_Set}" Padding="3" Margin="3" Height="130">
                             <StackPanel Orientation="Vertical" Margin="3">
@@ -104,7 +79,24 @@
                                 <RadioButton Tag="-n 1" Name="btnDenoise1" Margin="2" Content="{DynamicResource ResourceKey=Main_Mode_Denoise_1}" Checked="OnDenoiseChecked"></RadioButton>
                                 <RadioButton Tag="-n 2" Name="btnDenoise2" Margin="2" Content="{DynamicResource ResourceKey=Main_Mode_Denoise_2}" Checked="OnDenoiseChecked"></RadioButton>
                                 <RadioButton Tag="-n 3" Name="btnDenoise3" Margin="2" Content="{DynamicResource ResourceKey=Main_Mode_Denoise_3}" Checked="OnDenoiseChecked"></RadioButton>
-
+                            </StackPanel>
+                        </GroupBox>
+                                                <GroupBox Name="gpScale" Padding="3" Margin="3" Height="130">
+                            <StackPanel Orientation="vertical">
+                                <RadioButton Tag="-s " Name="btn_scale_ratio" Margin="2" Checked="OnScaleModeChecked" Content="{DynamicResource ResourceKey=Main_Mode_scale_ratio}"></RadioButton>
+                                <RadioButton Tag="-W " Name="btn_output_width" Margin="2" Checked="OnScaleModeChecked" Content="{DynamicResource ResourceKey=Main_Mode_output_width}"></RadioButton>
+                                <RadioButton Tag="-H " Name="btn_output_height" Margin="2" Checked="OnScaleModeChecked" Content="{DynamicResource ResourceKey=Main_Mode_output_height}"></RadioButton>
+                                <RadioButton Tag="-S " Name="btn_shorter_side" Margin="2" Checked="OnScaleModeChecked" Content="{DynamicResource ResourceKey=Main_Mode_shorter_side}"></RadioButton>
+                                <RadioButton Tag="-L " Name="btn_longer_side" Margin="2" Checked="OnScaleModeChecked" Content="{DynamicResource ResourceKey=Main_Mode_longer_side}"></RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Name="gpScale2" Padding="3" Margin="3" Height="130">
+                            <StackPanel Orientation="vertical">
+                                <TextBox Name="scale_ratio" MaxWidth="50" MinWidth="50" MaxHeight="20" Margin="1" Text="" ></TextBox>
+                                <TextBox Name="output_width" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" ></TextBox>
+                                <TextBox Name="output_height" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" ></TextBox>
+                                <TextBox Name="shorter_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" ></TextBox>
+                                <TextBox Name="longer_side" MinWidth="50" MaxWidth="50" MaxHeight="20" Margin="1" Text="" ></TextBox>
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Name="gpColor" Header="{DynamicResource ResourceKey=Main_Mode_Arch}" Padding="3" Margin="3">
@@ -159,7 +151,7 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="{DynamicResource ResourceKey=MainTab_Preferences}">
-                <StackPanel Orientation="Vertical" Margin="3" MinWidth="800" MinHeight="330">
+                <StackPanel Orientation="Vertical" Margin="3" MinWidth="970" MinHeight="250">
                     <GroupBox Name="gpDandD" Padding="3" Margin="3">
                         <StackPanel Orientation="Vertical" Margin="3">
                             <StackPanel Orientation="Horizontal">
@@ -176,6 +168,6 @@
         </TabControl>
         <Button Name="btnRun" Grid.Column="3" Grid.Row="4" MaxHeight="240" Padding="5" Content="{DynamicResource ResourceKey=Main_btnRun}" Click="OnRun"></Button>
         <Button Name="btnAbort" Grid.Column="2" Grid.Row="4" MaxHeight="240" Padding="5" IsEnabled="False" Content="{DynamicResource ResourceKey=Main_btnAbort}" Click="OnAbort"></Button>
-        <TextBox Name="CLIOutput" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" MinHeight="120" MaxHeight="120" MinWidth="800" MaxWidth="800" Margin="3,3,0,3" Padding="3" Background="White" IsReadOnly="False" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">Log</TextBox>
+        <TextBox Name="CLIOutput" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" MinHeight="120" MaxHeight="120" MinWidth="965" MaxWidth="965" Margin="3,3,0,3" Padding="3" Background="White" IsReadOnly="False" TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">Log</TextBox>
     </Grid>
 </Window>

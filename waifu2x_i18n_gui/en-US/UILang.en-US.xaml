@@ -25,7 +25,7 @@
     <sys:String x:Key="Main_Mode_Set_NoiseScale">Denoise &amp; Magnify</sys:String>
     <sys:String x:Key="Main_Mode_Set_Scale">Magnify only</sys:String>
     <sys:String x:Key="Main_Mode_Set_Noise">Denoise only</sys:String>
-    <sys:String x:Key="Main_Mode_Mag">_Magnification (1.0~10.0):</sys:String>
+    <sys:String x:Key="Main_Mode_scale_ratio">Set rate:</sys:String>
     <sys:String x:Key="Main_Mode_output_width">Set trans width:</sys:String>
     <sys:String x:Key="Main_Mode_output_height">Set trans height:</sys:String>
     <sys:String x:Key="Main_Mode_shorter_side">Set shorter side:</sys:String>

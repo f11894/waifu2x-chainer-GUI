@@ -110,6 +110,19 @@ namespace waifu2x_chainer_gui
             if (Properties.Settings.Default.noise_level == "0")
             { btnDenoise0.IsChecked = true; }
 
+            btn_scale_ratio.IsChecked = true;
+
+            if (Properties.Settings.Default.scale_mode == "scale_ratio")
+            { btn_scale_ratio.IsChecked = true; }
+            if (Properties.Settings.Default.scale_mode == "output_width")
+            { btn_output_width.IsChecked = true; }
+            if (Properties.Settings.Default.scale_mode == "output_heigh")
+            { btn_output_height.IsChecked = true; }
+            if (Properties.Settings.Default.scale_mode == "shorter_side")
+            { btn_shorter_side.IsChecked = true; }
+            if (Properties.Settings.Default.scale_mode == "longer_side")
+            { btn_longer_side.IsChecked = true; }
+
             btnUpResNet10.IsChecked = true;
 
             if (Properties.Settings.Default.Arch == "VGG7")
@@ -150,12 +163,6 @@ namespace waifu2x_chainer_gui
             if (Properties.Settings.Default.longer_side != 0)
             { longer_side.Text = Properties.Settings.Default.longer_side.ToString(); }
 
-            if (this.output_width.Text.Trim() != "" || this.output_height.Text.Trim() != "" || this.shorter_side.Text.Trim() != "" || this.longer_side.Text.Trim() != "")
-            {
-                slider_zoom.IsEnabled = false;
-                slider_value.IsEnabled = false;
-            }
-
             cbTTA.IsChecked = Properties.Settings.Default.TTAmode;
             ComboTTA_level.SelectedValue = Properties.Settings.Default.TTA_level;
 
@@ -164,8 +171,7 @@ namespace waifu2x_chainer_gui
             checkSoundBeep.IsChecked = Properties.Settings.Default.SoundBeep;
             checkStore_output_dir.IsChecked = Properties.Settings.Default.store_output_dir;
 
-            slider_value.Text = Properties.Settings.Default.scale_ratio;
-            slider_zoom.Value = double.Parse(Properties.Settings.Default.scale_ratio);
+            scale_ratio.Text = Properties.Settings.Default.scale_ratio;
 
             //cbTTA.IsChecked = false;
 
@@ -176,7 +182,8 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_informat = new StringBuilder("*.jpg *.jpeg *.png *.bmp *.tif *.tiff");
         public static StringBuilder param_outformat = new StringBuilder("png");
         public static StringBuilder param_outquality = new StringBuilder("100");
-        public static StringBuilder param_mag = new StringBuilder("2");
+        public static StringBuilder param_mag = new StringBuilder("-s 2");
+        public static StringBuilder param_mag2 = new StringBuilder("-s 2");
         public static StringBuilder param_denoise = new StringBuilder("");
         public static StringBuilder param_denoise2 = new StringBuilder("");
         public static StringBuilder param_arch = new StringBuilder("-a 3");
@@ -188,10 +195,6 @@ namespace waifu2x_chainer_gui
         public static StringBuilder param_device = new StringBuilder("");
         public static StringBuilder param_tta = new StringBuilder("");
         public static StringBuilder param_WorkingDirectory = new StringBuilder("");
-        public static StringBuilder param_width = new StringBuilder("");
-        public static StringBuilder param_height = new StringBuilder("");
-        public static StringBuilder param_shorter_side = new StringBuilder("");
-        public static StringBuilder param_longer_side = new StringBuilder("");
 
         public static StringBuilder param_waifu2x_chainer_path = new StringBuilder("C:\\waifu2x-chainer");
 
@@ -271,6 +274,17 @@ namespace waifu2x_chainer_gui
 
             Properties.Settings.Default.noise_level = param_denoise.ToString().Replace("-n ", "");
 
+            if (param_mag.ToString().Trim() == "-s")
+            { Properties.Settings.Default.scale_mode = "scale_ratio"; }
+            if (param_mag.ToString().Trim() == "-W")
+            { Properties.Settings.Default.scale_mode = "output_width"; }
+            if (param_mag.ToString().Trim() == "-H")
+            { Properties.Settings.Default.scale_mode = "output_heigh"; }
+            if (param_mag.ToString().Trim() == "-S")
+            { Properties.Settings.Default.scale_mode = "shorter_side"; }
+            if (param_mag.ToString().Trim() == "-L")
+            { Properties.Settings.Default.scale_mode = "longer_side"; }
+
             if (param_arch.ToString().Trim() == "-a 0")
             {Properties.Settings.Default.Arch = "VGG7";}
             if (param_arch.ToString().Trim() == "-a 1")
@@ -290,11 +304,11 @@ namespace waifu2x_chainer_gui
 
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
-                slider_value.Text,
+                scale_ratio.Text,
                 @"^\d+(\.\d+)?$",
                 System.Text.RegularExpressions.RegexOptions.ECMAScript))
             {
-               Properties.Settings.Default.scale_ratio = slider_value.Text;
+               Properties.Settings.Default.scale_ratio = scale_ratio.Text;
             } else 
             {
                Properties.Settings.Default.scale_ratio = "2";
@@ -481,15 +495,8 @@ namespace waifu2x_chainer_gui
             gpDenoise.IsEnabled = true;
             if (btnModeNoise.IsChecked == false) 
             {
-               output_width.IsEnabled = true;
-               output_height.IsEnabled = true;
-               shorter_side.IsEnabled = true;
-               longer_side.IsEnabled = true;
-                if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") if (this.shorter_side.Text.Trim() == "") if (this.longer_side.Text.Trim() == "")
-                            {
-                  slider_zoom.IsEnabled = true;
-                  slider_value.IsEnabled = true;
-               }
+                gpScale.IsEnabled = true;
+                gpScale2.IsEnabled = true;
             }
 
             param_mode.Clear();
@@ -499,30 +506,26 @@ namespace waifu2x_chainer_gui
             { gpDenoise.IsEnabled = false;}
             
             if (btnModeNoise.IsChecked == true)
-            { 
-              output_width.IsEnabled = false;
-              output_height.IsEnabled = false;
-              shorter_side.IsEnabled = false;
-              longer_side.IsEnabled = false;
-              slider_zoom.IsEnabled = false;
-              slider_value.IsEnabled = false;
+            {
+                gpScale.IsEnabled = false;
+                gpScale2.IsEnabled = false;
             }
         }
 
+        /*
         private void OutputSize_TextChanged(object sender, EventArgs e)
         {
             if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() != "" || this.output_width.Text.Trim() != "" || this.shorter_side.Text.Trim() != "")
             {
-                slider_zoom.IsEnabled = false;
-                slider_value.IsEnabled = false;
+                scale_ratio.IsEnabled = false;
             }
 
             if (btnModeNoise.IsChecked == false) if (this.output_height.Text.Trim() == "") if (this.output_width.Text.Trim() == "") if (this.shorter_side.Text.Trim() == "")
                         {
-                    slider_zoom.IsEnabled = true;
-                    slider_value.IsEnabled = true;
+                    scale_ratio.IsEnabled = true;
                 }
         }
+        */
 
         private void OnDenoiseChecked(object sender, RoutedEventArgs e)
         {
@@ -551,6 +554,38 @@ namespace waifu2x_chainer_gui
             param_block.Clear();
             RadioButton optsrc= sender as RadioButton;
             param_block.Append(optsrc.Tag.ToString());
+        }
+
+        private void OnScaleModeChecked(object sender, RoutedEventArgs e)
+        {
+            param_mag.Clear();
+            RadioButton optsrc = sender as RadioButton;
+            param_mag.Append(optsrc.Tag.ToString());
+            output_width.IsEnabled = false;
+            output_height.IsEnabled = false;
+            shorter_side.IsEnabled = false;
+            longer_side.IsEnabled = false;
+            scale_ratio.IsEnabled = false;
+            if (btn_scale_ratio.IsChecked == true)
+            {
+                scale_ratio.IsEnabled = true;
+            }
+            if (btn_output_width.IsChecked == true)
+            {
+                output_width.IsEnabled = true;
+            }
+            if (btn_output_height.IsChecked == true)
+            {
+                output_height.IsEnabled = true;
+            }
+            if (btn_shorter_side.IsChecked == true)
+            {
+                shorter_side.IsEnabled = true;
+            }
+            if (btn_longer_side.IsChecked == true)
+            {
+                longer_side.IsEnabled = true;
+            }
         }
 
         private void OnBatchChecked(object sender, RoutedEventArgs e)
@@ -716,10 +751,28 @@ namespace waifu2x_chainer_gui
             param_color.Clear();
             param_color.Append("-c " + ComboColor_Mode.SelectedValue.ToString().ToLowerInvariant());
 
-            param_mag.Clear();
-            param_mag.Append("-s ");
-            param_mag.Append(this.slider_value.Text);
-
+            param_mag2.Clear();
+            param_mag2.Append(param_mag.ToString());
+            if (btn_scale_ratio.IsChecked == true)
+            {
+                param_mag2.Append(scale_ratio.Text);
+            }
+            if (btn_output_width.IsChecked == true)
+            {
+                param_mag2.Append(output_width.Text);
+            }
+            if (btn_output_height.IsChecked == true)
+            {
+                param_mag2.Append(output_height.Text);
+            }
+            if (btn_shorter_side.IsChecked == true)
+            {
+                param_mag2.Append(shorter_side.Text);
+            }
+            if (btn_longer_side.IsChecked == true)
+            {
+                param_mag2.Append(longer_side.Text);
+            }
             param_outformat.Clear();
             if (txtOutExt.Text != "png")
             {
@@ -742,62 +795,6 @@ namespace waifu2x_chainer_gui
                         txtOutQuality.Clear();
                     }
 
-            }
-
-            param_width.Clear();
-            if (!System.Text.RegularExpressions.Regex.IsMatch(
-            output_width.Text,
-            @"^\d+$",
-            System.Text.RegularExpressions.RegexOptions.ECMAScript))
-            {
-                output_width.Clear();
-
-            } else
-            {
-                param_mag.Clear();
-                param_width.Append("-W " + this.output_width.Text);
-            }
-
-            param_height.Clear();
-            if (!System.Text.RegularExpressions.Regex.IsMatch(
-                output_height.Text,
-                @"^\d+$",
-                System.Text.RegularExpressions.RegexOptions.ECMAScript))
-            {
-                output_height.Clear();
-            } else
-            {
-                param_mag.Clear();
-                param_height.Append("-H " + this.output_height.Text);
-            }
-
-            param_shorter_side.Clear();
-            if (!System.Text.RegularExpressions.Regex.IsMatch(
-            shorter_side.Text,
-            @"^\d+$",
-            System.Text.RegularExpressions.RegexOptions.ECMAScript))
-            {
-                shorter_side.Clear();
-
-            }
-            else
-            {
-                param_mag.Clear();
-                param_shorter_side.Append("-S " + this.shorter_side.Text);
-            }
-
-            param_longer_side.Clear();
-            if (!System.Text.RegularExpressions.Regex.IsMatch(
-                longer_side.Text,
-                @"^\d+$",
-                System.Text.RegularExpressions.RegexOptions.ECMAScript))
-            {
-                longer_side.Clear();
-            }
-            else
-            {
-                param_mag.Clear();
-                param_longer_side.Append("-L " + this.longer_side.Text);
             }
 
             if (System.Text.RegularExpressions.Regex.IsMatch(
@@ -858,11 +855,7 @@ namespace waifu2x_chainer_gui
             // Set mode
             if (param_mode.ToString() == "-m noise")
             {
-                param_width.Clear();
-                param_height.Clear();
-                param_shorter_side.Clear();
-                param_longer_side.Clear();
-                param_mag.Clear();
+                param_mag2.Clear();
             }
             if (param_mode.ToString() == "-m scale")
             {
@@ -880,11 +873,7 @@ namespace waifu2x_chainer_gui
                 param_outformat.ToString(),
                 param_outquality.ToString(),
                 param_mode.ToString(),
-                param_mag.ToString(),
-                param_width.ToString(),
-                param_height.ToString(),
-                param_shorter_side.ToString(),
-                param_longer_side.ToString(),
+                param_mag2.ToString(),
                 param_denoise2.ToString(),
                 param_arch.ToString(),
                 param_model.ToString(),

@@ -25,7 +25,7 @@
     <sys:String x:Key="Main_Mode_Set_NoiseScale">ノイズ除去と拡大</sys:String>
     <sys:String x:Key="Main_Mode_Set_Scale">拡大</sys:String>
     <sys:String x:Key="Main_Mode_Set_Noise">ノイズ除去</sys:String>
-    <sys:String x:Key="Main_Mode_Mag">拡大率 (1.0~10.0):</sys:String>
+    <sys:String x:Key="Main_Mode_scale_ratio">拡大率を指定:　　　</sys:String>
     <sys:String x:Key="Main_Mode_output_width">横幅を指定:</sys:String>
     <sys:String x:Key="Main_Mode_output_height">縦幅を指定:</sys:String>
     <sys:String x:Key="Main_Mode_shorter_side">短辺を指定:</sys:String>

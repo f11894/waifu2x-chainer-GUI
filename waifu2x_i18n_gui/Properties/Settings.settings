@@ -62,5 +62,8 @@
     <Setting Name="longer_side" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="scale_mode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">scale_ratio</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
