@@ -395,8 +395,8 @@ namespace waifu2x_chainer_gui
             string msg =
                 "Multilingual GUI for waifu2x-chainer\n" +
                 "f11894 (2019)\n" +
-                "Version 1.2.4\n" +
-                "BuildDate: 25 Mar,2019\n" +
+                "Version 1.2.5\n" +
+                "BuildDate: 30 Aug,2019\n" +
                 "License: Do What the Fuck You Want License";
             MessageBox.Show(msg);
         }
